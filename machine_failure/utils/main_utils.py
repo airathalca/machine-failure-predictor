@@ -1,9 +1,10 @@
+import pandas as pd
+import numpy as np
 import os
 import sys
-import numpy as np
 import dill
 import yaml
-from pandas import DataFrame
+
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
 
@@ -104,7 +105,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
     logging.error(f"Error in load_numpy_array_data: {e}")
     raise CustomException(e, sys)
 
-def drop_columns(df: DataFrame, cols: list)-> DataFrame:
+def drop_columns(df: pd.DataFrame, cols: list)-> pd.DataFrame:
   """
   drop the columns form a pandas DataFrame
   df: pandas DataFrame
