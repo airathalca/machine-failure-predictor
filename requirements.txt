@@ -6,13 +6,13 @@ flask_cors
 mlflow
 dvc
 dvc-s3
-# ipykernel
 xgboost
 optuna
-# dagshub
 apache-airflow
-# seaborn
-# shap
 imblearn
+python-dotenv
+dill
+PyYAML
+pymongo
 
 -e .
