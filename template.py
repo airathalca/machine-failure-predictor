@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-project_name = "machine-failure"
+project_name = "machine_failure"
 
 list_of_files = [
 

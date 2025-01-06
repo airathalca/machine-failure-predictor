@@ -1,19 +1,18 @@
-# pandas
-# scikit-learn
-# numpy
-# flask
-# flask_cors
-# mlflow
-# dvc
-# dvc-s3
+pandas
+scikit-learn
+numpy
+flask
+flask_cors
+mlflow
+dvc
+dvc-s3
 # ipykernel
-# xgboost
-# optuna
+xgboost
+optuna
 # dagshub
-# apache-airflow
+apache-airflow
 # seaborn
 # shap
-# category_encoders
-# imblearn
+imblearn
 
 -e .
