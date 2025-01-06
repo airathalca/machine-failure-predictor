@@ -8,9 +8,9 @@ from machine_failure.constants import DATABASE_NAME
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
 
-class MachineData:
+class MongoDataset:
   """
-  Class Name  : MachineData
+  Class Name  : Dataset
   Description : This class is used to export collection as dataframe
   Output      : pd.DataFrame
   On Failure  : Raise Exception
@@ -43,7 +43,7 @@ class MachineData:
     
 if __name__ == "__main__":
   try:
-    machine_data = MachineData()
+    machine_data = MongoDataset()
     df = machine_data.export_collection_to_dataframe("machine_data_failure")
     print(df.head())
   except Exception as e:
