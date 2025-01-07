@@ -4,9 +4,15 @@ from dataclasses import dataclass
 
 @dataclass
 class DataIngestionConfig:
-    data_ingestion_dir: str = os.path.join(ARTIFACT_DIR, DATA_INGESTION_DIR_NAME)
-    raw_file_path: str = os.path.join(data_ingestion_dir, FILE_NAME)
-    training_file_path: str = os.path.join(data_ingestion_dir,  DATA_SPLIT_DIR_NAME, TRAIN_FILE_NAME)
-    testing_file_path: str = os.path.join(data_ingestion_dir, DATA_SPLIT_DIR_NAME, TEST_FILE_NAME)
-    train_test_split_ratio: float = DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
-    collection_name:str = DATA_INGESTION_COLLECTION_NAME
+  data_ingestion_dir: str = os.path.join(ARTIFACT_DIR, DATA_INGESTION_DIR_NAME)
+  raw_file_path: str = os.path.join(data_ingestion_dir, FILE_NAME)
+  training_file_path: str = os.path.join(data_ingestion_dir,  DATA_SPLIT_DIR_NAME, TRAIN_FILE_NAME)
+  testing_file_path: str = os.path.join(data_ingestion_dir, DATA_SPLIT_DIR_NAME, TEST_FILE_NAME)
+  train_test_split_ratio: float = DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
+  collection_name:str = DATA_INGESTION_COLLECTION_NAME
+
+@dataclass
+class DataValidationConfig:
+  data_validation_dir: str = os.path.join(ARTIFACT_DIR, DATA_VALIDATION_DIR_NAME)
+  drift_report_yaml_file_path: str = os.path.join(data_validation_dir, DATA_VALIDATION_REPORT_YAML_FILE_NAME)
+  drift_report_html_file_path: str = os.path.join(data_validation_dir, DATA_VALIDATION_REPORT_HTML_FILE_NAME)

@@ -7,6 +7,7 @@ from machine_failure.logger.custom_logging import logging
 from machine_failure.entity.config_entity import DataIngestionConfig
 from machine_failure.entity.artifact_entity import DataIngestionArtifact
 from machine_failure.configuration.mongodb_data_access import MongoDataset
+from machine_failure.utils.main_utils import write_csv
 
 from sklearn.model_selection import train_test_split
 
@@ -16,7 +17,7 @@ class DataIngestion:
     self.config = DataIngestionConfig()
 
   def export_raw_data(self) -> pd.DataFrame:
-    logging.info("Entered the read_data method")
+    logging.info("Entered the export_raw_data method")
     try:
       logging.info('Exporting data from MongoDB')
       mongo_data = MongoDataset()
@@ -25,8 +26,8 @@ class DataIngestion:
 
       dir_path = os.path.dirname(self.config.raw_file_path)
       os.makedirs(dir_path,exist_ok=True)
-      logging.info(f'Saving raw data to {self.config.raw_file_path}')
-      df.to_csv(self.config.raw_file_path, index=False, header=True)
+      logging.info(f'Saving raw data')
+      write_csv(self.config.raw_file_path, df)
       logging.info('Raw data saved successfully')
 
       return df
@@ -44,8 +45,8 @@ class DataIngestion:
       dir_path = os.path.dirname(self.config.training_file_path)
       os.makedirs(dir_path,exist_ok=True)
       logging.info(f'Saving train data and test data')
-      train_set.to_csv(self.config.training_file_path, index=False, header=True)
-      test_set.to_csv(self.config.testing_file_path, index=False, header=True)
+      write_csv(self.config.training_file_path, train_set)
+      write_csv(self.config.testing_file_path, test_set)
       logging.info('Train and Test data saved successfully')
 
     except Exception as e:
