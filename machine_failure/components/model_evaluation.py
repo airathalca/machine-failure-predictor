@@ -6,21 +6,23 @@ import numpy as np
 import pandas as pd
 
 from sklearn.metrics import f1_score, roc_auc_score
+from machine_failure.constants import CONFIG_DIR, SCHEMA_FILE_PATH
 from machine_failure.entity.s3_model import MachineFailureS3Model
-from machine_failure.utils.main_utils import load_numpy_array_data, load_object
+from machine_failure.utils.main_utils import drop_columns, read_yaml_file
 from machine_failure.logger.custom_logging import logging
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.entity.config_entity import ModelBucketConfig
-from machine_failure.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ModelEvaluationArtifact
+from machine_failure.entity.artifact_entity import DataIngestionArtifact, ModelTrainerArtifact, ModelEvaluationArtifact
 
 import mlflow
 import mlflow.sklearn
 
 class ModelEvaluation:
-  def __init__(self, model_trainer_artifact: ModelTrainerArtifact, data_transformation_artifact: DataTransformationArtifact):
+  def __init__(self, model_trainer_artifact: ModelTrainerArtifact, data_ingestion_artifact: DataIngestionArtifact):
     self.config = ModelBucketConfig()
     self.model_trainer_artifact = model_trainer_artifact
-    self.transformation_artifact = data_transformation_artifact
+    self.ingestion_artifact = data_ingestion_artifact
+    self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
 
   def get_bucket_model(self) -> Optional[MachineFailureS3Model]:
     logging.info('Entered the get_bucket_model method')
@@ -38,8 +40,11 @@ class ModelEvaluation:
 
   def evaluate_model(self) -> ModelEvaluationArtifact:
     try:
-      test_np = load_numpy_array_data(self.transformation_artifact.transformed_test_file_path)
-      X_test, y_test = test_np[:, :-1], test_np[:, -1]
+      test_df = pd.read_csv(self.ingestion_artifact.test_file_path)
+      X_test = test_df.drop(columns=[self.schema['target']], axis=1)
+      y_test = test_df[self.schema['target']]
+      X_test['Product ID'] = X_test['Product ID'].str.replace('M','').str.replace('L','').str.replace('H','').astype(int)
+      X_test = drop_columns(X_test, self.schema['drop_columns'])
       logging.info('Model evaluation started')
 
       logging.info('Getting the model from the bucket')
@@ -55,9 +60,9 @@ class ModelEvaluation:
           mlflow.log_metric("roc_auc", roc_auc)
           mlflow.log_metric("f1_score", f1)
           if tracking_url_type != "file":
-            mlflow.sklearn.log_model(model, "model", registered_model_name="ml_model")
+            mlflow.sklearn.log_model(model.loaded_model.trained_model_object, "model", registered_model_name="ml_model")
           else:
-            mlflow.sklearn.log_model(model, "model")
+            mlflow.sklearn.log_model(model.loaded_model.trained_model_object, "model")
       else:
         roc_auc = 0
         f1 = 0

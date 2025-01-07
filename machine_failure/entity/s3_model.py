@@ -29,3 +29,11 @@ class MachineFailureS3Model:
       return self.loaded_model.predict(df)
     except Exception as e:
       raise CustomException(e, sys)
+    
+  def predict_proba(self,df: pd.DataFrame):
+    try:
+      if self.loaded_model is None:
+        self.loaded_model = self.load_model()
+      return self.loaded_model.predict_proba(df)
+    except Exception as e:
+      raise CustomException(e, sys)

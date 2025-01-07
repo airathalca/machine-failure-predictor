@@ -56,10 +56,10 @@ class TrainPipeline:
     except Exception as e:
       raise CustomException(e, sys)
 
-  def start_model_evaluation(self, data_transformation_artifact: DataTransformationArtifact, model_trainer_artifact: ModelTrainerArtifact) -> ModelEvaluationArtifact:
+  def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact, model_trainer_artifact: ModelTrainerArtifact) -> ModelEvaluationArtifact:
     try:
       model_evaluation = ModelEvaluation(model_trainer_artifact=model_trainer_artifact,
-                                         data_transformation_artifact=data_transformation_artifact)
+                                          data_ingestion_artifact=data_ingestion_artifact)
       model_evaluation_artifact = model_evaluation.evaluate_model()
       return model_evaluation_artifact
     except Exception as e:
@@ -80,7 +80,7 @@ class TrainPipeline:
       data_transformation_artifact = self.start_data_transformation(
           data_ingestion_artifact=data_ingestion_artifact, data_validation_artifact=data_validation_artifact)
       model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
-      model_evaluation_artifact = self.start_model_evaluation(data_transformation_artifact=data_transformation_artifact,
+      model_evaluation_artifact = self.start_model_evaluation(data_ingestion_artifact=data_ingestion_artifact,
                                                               model_trainer_artifact=model_trainer_artifact)
       if not model_evaluation_artifact.model_accepted:
           logging.info(f"Model not accepted.")
@@ -92,10 +92,4 @@ class TrainPipeline:
 
 if __name__ == '__main__':
   train_pipeline = TrainPipeline()
-  transformation_artifact = DataTransformationArtifact('artifact/data_transformation/preprocessor.pkl',
-                                                       'artifact/data_transformation/data/train.npy',
-                                                       'artifact/data_transformation/data/test.npy')
-  metric_artifact = ClassificationMetricArtifact(f1_score=0.7225, roc_auc_score=0.9779)
-  trainer_artifact = ModelTrainerArtifact('artifact/model_trainer/model.pkl', metric_artifact)
-  evaluation_artifact = train_pipeline.start_model_evaluation(transformation_artifact, trainer_artifact)
-  train_pipeline.start_model_pusher(model_evaluation_artifact=evaluation_artifact)
+  train_pipeline.run_pipeline()
