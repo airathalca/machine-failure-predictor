@@ -1,0 +1,112 @@
+optuna:
+  n_trials: 15  # Number of trials for Optuna to run
+  timeout: 600  # Maximum time (in seconds) for the optimization
+  direction: maximize  # Direction of optimization (maximize or minimize)
+  study_name: model_tuning  # Name of the Optuna study
+
+models:
+  xgb:
+    class: XGBClassifier
+    module: xgboost
+    params:
+      objective: binary:logistic
+      eval_metric: auc
+      random_state: 42
+    search_space:
+      n_estimators:
+        type: int
+        low: 100
+        high: 500
+      learning_rate:
+        type: float
+        low: 0.001
+        high: 0.3
+        log: True  # Use loguniform distribution
+      max_depth:
+        type: int
+        low: 3
+        high: 15
+      subsample:
+        type: float
+        low: 0.5
+        high: 1.0
+      colsample_bytree:
+        type: float
+        low: 0.5
+        high: 1.0
+
+  lgbm:
+    class: LGBMClassifier
+    module: lightgbm
+    params:
+      metric: auc
+      verbosity: -1
+      random_state: 42
+      is_unbalance: True
+    search_space:
+      n_estimators:
+        type: int
+        low: 100
+        high: 500
+      learning_rate:
+        type: float
+        low: 0.001
+        high: 0.3
+        log: True  # Use loguniform distribution
+      max_depth:
+        type: int
+        low: 3
+        high: 15
+      num_leaves:
+        type: int
+        low: 10
+        high: 100
+      subsample:
+        type: float
+        low: 0.5
+        high: 1.0
+      colsample_bytree:
+        type: float
+        low: 0.5
+        high: 1.0
+
+  catboost:
+    class: CatBoostClassifier
+    module: catboost
+    params:
+      random_state: 42
+      verbose: False  # Disable verbose output
+      eval_metric: AUC
+    search_space:
+      iterations:
+        type: int
+        low: 100
+        high: 500
+      learning_rate:
+        type: float
+        low: 0.001
+        high: 0.3
+        log: True  # Use loguniform distribution
+      depth:
+        type: int
+        low: 3
+        high: 10
+      l2_leaf_reg:
+        type: float
+        low: 1
+        high: 10
+      border_count:
+        type: int
+        low: 32
+        high: 255
+      subsample:
+        type: float
+        low: 0.5
+        high: 1.0
+
+voting_classifier:
+  class: VotingClassifier
+  module: sklearn.ensemble
+  params:
+    voting: soft
+    weights: [1, 1, 1]  # Equal weights for all models

@@ -23,3 +23,10 @@ class DataTransformationConfig:
   transformed_train_file_path: str = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_DATA_DIR_NAME, TRAIN_FILE_NAME.replace("csv", "npy"))
   transformed_test_file_path: str = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_DATA_DIR_NAME, TEST_FILE_NAME.replace("csv", "npy"))
   transformed_object_file_path: str = os.path.join(data_transformation_dir, PREPROCESSOR_FILE_NAME)
+
+@dataclass
+class ModelTrainerConfig:
+  model_trainer_dir: str = os.path.join(ARTIFACT_DIR, MODEL_TRAINER_DIR_NAME)
+  trained_model_file_path: str = os.path.join(model_trainer_dir, MODEL_FILE_NAME)
+  expected_metric: float = MODEL_TRAINER_EXPECTED_SCORE
+  model_config_file_path: str = MODEL_TRAINER_CONFIG_FILE_PATH
