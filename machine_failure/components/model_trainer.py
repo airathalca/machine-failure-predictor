@@ -85,7 +85,7 @@ class ModelTrainer:
     try:
       # Optimize each model individually
       best_models = {}
-      X_train_resampled, y_train_resampled = SMOTE(random_state=42, sampling_strategy=0.25).fit_resample(X_train, y_train)
+      X_train_resampled, y_train_resampled = SMOTE(random_state=42, sampling_strategy=0.5).fit_resample(X_train, y_train)
       for model_name, model_config in self.model_schema["models"].items():
         logging.info(f"Optimizing model: {model_name}")
         best_params = self._optimize_model(model_name, model_config, X_train_resampled, y_train_resampled, X_test, y_test)
