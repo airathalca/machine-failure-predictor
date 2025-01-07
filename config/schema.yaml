@@ -1,0 +1,15 @@
+columns:
+  - id: int
+  - Product ID: category
+  - Type: category
+  - Air temperature [K]: float
+  - Process temperature [K]: float
+  - Rotational speed [rpm]: int
+  - Torque [Nm]: float
+  - Tool wear [min]: int
+  - Machine failure: int
+  - TWF: int
+  - HDF: int
+  - PWF: int
+  - OSF: int
+  - RNF: int
