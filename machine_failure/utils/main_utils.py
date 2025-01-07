@@ -17,7 +17,7 @@ def read_yaml_file(file_path: str) -> dict:
   try:
     with open(file_path, "rb") as yaml_file:
       return yaml.safe_load(yaml_file)
-    logging.info("Exited the read_yaml_file. Function executed successfully")
+    logging.info(f"Exited the read_yaml_file. {file_path} read successfully")
   except Exception as e:
     logging.error(f"Error in read_yaml_file: {e}")
     raise CustomException(e, sys)
@@ -37,7 +37,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "w") as file:
       yaml.dump(content, file)
-    logging.info("Exited the write_yaml_file. Function executed successfully")
+    logging.info(f"Exited the write_yaml_file. {file_path} written successfully")
   except Exception as e:
     logging.error(f"Error in write_yaml_file: {e}")
     raise CustomException(e, sys)
@@ -53,7 +53,7 @@ def save_object(file_path: str, obj: object) -> None:
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "wb") as file_obj:
       dill.dump(obj, file_obj)
-    logging.info("Exited the save_object. Function executed successfully")
+    logging.info(f"Exited the save_object. {file_path} saved successfully")
   except Exception as e:
     logging.error(f"Error in save_object: {e}")
     raise CustomException(e, sys)
@@ -67,7 +67,7 @@ def load_object(file_path: str) -> object:
   try:
     with open(file_path, "rb") as file_obj:
       obj = dill.load(file_obj)
-    logging.info("Exited the load_object. Function executed successfully")
+    logging.info(f"Exited the load_object. {file_path} loaded successfully")
     return obj
   except Exception as e:
     logging.error(f"Error in load_object: {e}")
@@ -85,7 +85,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
     os.makedirs(dir_path, exist_ok=True)
     with open(file_path, 'wb') as file_obj:
       np.save(file_obj, array)
-    logging.info("Exited the save_numpy_array_data. Function executed successfully")
+    logging.info(f"Exited the save_numpy_array_data. {file_path} saved successfully")
   except Exception as e:
     logging.error(f"Error in save_numpy_array_data: {e}")
     raise CustomException(e, sys)
@@ -100,9 +100,38 @@ def load_numpy_array_data(file_path: str) -> np.array:
   try:
     with open(file_path, 'rb') as file_obj:
       return np.load(file_obj)
-    logging.info("Exited the load_numpy_array_data. Function executed successfully")
+    logging.info(f"Exited the load_numpy_array_data. {file_path} loaded successfully")
   except Exception as e:
     logging.error(f"Error in load_numpy_array_data: {e}")
+    raise CustomException(e, sys)
+  
+def read_csv(file_path: str) -> pd.DataFrame:
+  """
+  Read csv file
+  file_path: str location of file to read
+  return: pandas DataFrame
+  """
+  logging.info("Entered the read_csv method of utils")
+  try:
+    df = pd.read_csv(file_path)
+    logging.info(f"Exited the read_csv. {file_path} read successfully")
+    return df
+  except Exception as e:
+    logging.error(f"Error in read_csv: {e}")
+    raise CustomException(e, sys)
+  
+def write_csv(file_path: str, df: pd.DataFrame) -> None:
+  """
+  Write csv file
+  file_path: str location of file to write
+  df: pandas DataFrame
+  """
+  logging.info("Entered the write_csv method of utils")
+  try:
+    df.to_csv(file_path, index=False, header=True)
+    logging.info(f"Exited the write_csv. {file_path} written successfully")
+  except Exception as e:
+    logging.error(f"Error in write_csv: {e}")
     raise CustomException(e, sys)
 
 def drop_columns(df: pd.DataFrame, cols: list)-> pd.DataFrame:
@@ -114,7 +143,7 @@ def drop_columns(df: pd.DataFrame, cols: list)-> pd.DataFrame:
   logging.info("Entered the drop_columns method of utils")
   try:
     df = df.drop(columns=cols, axis=1)
-    logging.info("Exited the drop_columns. Function executed successfully")
+    logging.info(f"Exited the drop_columns. Columns {cols} dropped successfully")
     return df
   except Exception as e:
     logging.error(f"Error in drop_columns: {e}")
