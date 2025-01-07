@@ -13,3 +13,24 @@ columns:
   - PWF: int
   - OSF: int
   - RNF: int
+target: Machine failure
+drop_columns:
+  - id
+  - RNF
+cat_columns:
+  - Type
+num_columns:
+  - Product ID
+  - Air temperature [K]
+  - Process temperature [K]
+  - Rotational speed [rpm]
+  - Torque [Nm]
+  - Tool wear [min]
+  - TWF
+  - HDF
+  - PWF
+  - OSF
+  - Power
+  - Temp Ratio
+  - Torque X Tool wear
+  - Tool Wear Rate

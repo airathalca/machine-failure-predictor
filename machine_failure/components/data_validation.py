@@ -13,9 +13,9 @@ from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
 
 class DataValidation:
-  def __init__(self, dataIngestionArtifact: DataIngestionArtifact):
+  def __init__(self, data_ingestion_artifact: DataIngestionArtifact):
     self.config = DataValidationConfig()
-    self.ingestion_artifact = dataIngestionArtifact
+    self.ingestion_artifact = data_ingestion_artifact
     self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
 
   def validate_total_columns(self, df: pd.DataFrame) -> bool:
@@ -55,6 +55,7 @@ class DataValidation:
       raise CustomException(e, sys)
     
   def detect_dataset_drift(self, train_df: pd.DataFrame, test_df: pd.DataFrame) -> bool:
+    logging.info("Entered the detect_dataset_drift method")
     try:
       # Create a data drift report using the new Evidently API
       data_drift_report = Report(metrics=[DataDriftPreset()])
