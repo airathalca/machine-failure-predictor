@@ -4,6 +4,7 @@ import sys
 from typing import Any, Dict, Tuple
 import numpy as np
 
+from machine_failure.entity.model import MachineFailureModel
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
 from machine_failure.utils.main_utils import load_numpy_array_data, read_yaml_file, load_object, save_object
@@ -15,10 +16,6 @@ from imblearn.over_sampling import SMOTE
 from sklearn.metrics import confusion_matrix, roc_auc_score, f1_score
 from sklearn.ensemble import VotingClassifier
 import optuna
-
-from machine_failure.components.data_ingestion import DataIngestion
-from machine_failure.components.data_validation import DataValidation
-from machine_failure.components.data_transformation import DataTransformation
 
 class ModelTrainer:
   def __init__(self, data_transformation_artifact: DataTransformationArtifact):
@@ -85,10 +82,9 @@ class ModelTrainer:
     try:
       # Optimize each model individually
       best_models = {}
-      X_train_resampled, y_train_resampled = SMOTE(random_state=42, sampling_strategy=0.5).fit_resample(X_train, y_train)
       for model_name, model_config in self.model_schema["models"].items():
         logging.info(f"Optimizing model: {model_name}")
-        best_params = self._optimize_model(model_name, model_config, X_train_resampled, y_train_resampled, X_test, y_test)
+        best_params = self._optimize_model(model_name, model_config, X_train, y_train, X_test, y_test)
 
         model_class = self._get_model_class(model_config)
         best_models[model_name] = model_class(**model_config["params"], **best_params)
@@ -100,7 +96,7 @@ class ModelTrainer:
         voting=self.model_schema["voting_classifier"]["params"]["voting"],
         weights=self.model_schema["voting_classifier"]["params"]["weights"]
       )
-      voting_clf.fit(X_train_resampled, y_train_resampled)
+      voting_clf.fit(X_train, y_train)
 
       y_pred_proba = voting_clf.predict_proba(X_test)[:, 1]
       y_pred = voting_clf.predict(X_test)
@@ -133,7 +129,12 @@ class ModelTrainer:
 
       logging.info("Training model")
       model, metric_artifact = self.train_model(X_train, y_train, X_test, y_test)
-      save_object(self.config.trained_model_file_path, model)
+      if metric_artifact.roc_auc_score < self.config.expected_metric:
+        raise CustomException(f"ROC AUC score is less than the expected metric: {metric_artifact.roc_auc_score}", sys)
+
+      preprocessing_obj = load_object(file_path=self.transformation_artifact.transformed_object_file_path)
+      save_file = MachineFailureModel(preprocessing_obj, model)
+      save_object(self.config.trained_model_file_path, save_file)
       logging.info(f"Model saved at: {self.config.trained_model_file_path}")
 
       return ModelTrainerArtifact(

@@ -10,6 +10,7 @@ TEST_FILE_NAME: str = "test.csv"
 RAW_FILE_NAME: str = "data.csv"
 MODEL_FILE_NAME = "model.pkl"
 PREPROCESSOR_FILE_NAME = "preprocessor.pkl"
+MODEL_BUCKET_NAME="machine-failure-model"
 
 CONFIG_DIR: str = "config"
 SCHEMA_FILE_PATH: str = "schema.yaml"

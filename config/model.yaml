@@ -70,39 +70,30 @@ models:
         low: 0.5
         high: 1.0
 
-  catboost:
-    class: CatBoostClassifier
-    module: catboost
+  balanced_rf:
+    class: BalancedRandomForestClassifier
+    module: imblearn.ensemble
     params:
       random_state: 42
-      verbose: False  # Disable verbose output
-      eval_metric: AUC
     search_space:
-      iterations:
+      n_estimators:
         type: int
         low: 100
         high: 500
-      learning_rate:
-        type: float
-        low: 0.001
-        high: 0.3
-        log: True  # Use loguniform distribution
-      depth:
+      max_depth:
+        type: categorical
+        choices: [10, None]
+      min_samples_split:
         type: int
-        low: 3
-        high: 10
-      l2_leaf_reg:
-        type: float
+        low: 2
+        high: 5
+      min_samples_leaf:
+        type: int
         low: 1
-        high: 10
-      border_count:
-        type: int
-        low: 32
-        high: 255
-      subsample:
-        type: float
-        low: 0.5
-        high: 1.0
+        high: 5
+      max_features:
+        type: categorical
+        choices: [sqrt, log2, None]
 
 voting_classifier:
   class: VotingClassifier

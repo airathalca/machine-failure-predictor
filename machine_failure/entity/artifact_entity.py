@@ -18,10 +18,21 @@ class DataTransformationArtifact:
 
 @dataclass
 class ClassificationMetricArtifact:
-    f1_score:float
-    roc_auc_score:float
+  f1_score:float
+  roc_auc_score:float
 
 @dataclass
 class ModelTrainerArtifact:
-    trained_model_file_path:str 
-    metric_artifact:ClassificationMetricArtifact
+  trained_model_file_path:str 
+  metric_artifact:ClassificationMetricArtifact
+
+@dataclass
+class ModelEvaluationArtifact:
+  model_accepted:bool
+  s3_model_path:str 
+  trained_model_path:str
+
+@dataclass
+class ModelPusherArtifact:
+  bucket_name:str
+  s3_model_path:str

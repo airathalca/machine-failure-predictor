@@ -30,3 +30,8 @@ class ModelTrainerConfig:
   trained_model_file_path: str = os.path.join(model_trainer_dir, MODEL_FILE_NAME)
   expected_metric: float = MODEL_TRAINER_EXPECTED_SCORE
   model_config_file_path: str = MODEL_TRAINER_CONFIG_FILE_PATH
+
+@dataclass
+class ModelPusherConfig:
+  bucket_name: str = MODEL_BUCKET_NAME
+  s3_model_key_path: str = MODEL_FILE_NAME
