@@ -32,6 +32,6 @@ class ModelTrainerConfig:
   model_config_file_path: str = MODEL_TRAINER_CONFIG_FILE_PATH
 
 @dataclass
-class ModelPusherConfig:
+class ModelBucketConfig:
   bucket_name: str = MODEL_BUCKET_NAME
   s3_model_key_path: str = MODEL_FILE_NAME

@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 
 from machine_failure.configuration.s3_storage import S3Storage
-from machine_failure.logger.custom_logging import CustomException
+from machine_failure.exception.custom_exception import CustomException
 from machine_failure.entity.model import MachineFailureModel
 
 class MachineFailureS3Model:
@@ -21,13 +21,6 @@ class MachineFailureS3Model:
 
   def load_model(self) -> MachineFailureModel:
     return self.s3.load_model(self.model_path, bucket_name=self.bucket_name)
-
-  def save_model(self, local_file: str, remove: bool = False) -> None:
-    try:
-      self.s3.upload_file(local_file, bucket_filename=self.model_path,
-                          bucket_name=self.bucket_name, remove=remove)
-    except Exception as e:
-      raise CustomException(e, sys)
 
   def predict(self,df: pd.DataFrame):
     try:

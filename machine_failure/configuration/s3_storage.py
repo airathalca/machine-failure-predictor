@@ -29,7 +29,6 @@ class S3Storage:
           return False
     except Exception as e:
       raise CustomException(e, sys)
-    
       
   @staticmethod
   def read_object(object_name: str, decode: bool = True, make_readable: bool = False) -> Union[StringIO, str]:

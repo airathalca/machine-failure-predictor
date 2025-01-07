@@ -18,9 +18,9 @@ class AWSConnection:
         raise Exception(f"Environment variable: AWS_ACCESS_KEY_ID is not not set.")
       if secret_access_key is None:
         raise Exception(f"Environment variable: AWS_SECRET_ACCESS_KEY is not set.")
-      AWSConnection.resource = boto3.resource('s3', aws_access_key_id_id=access_key_id, 
-                                         aws_secret_access_key_id=secret_access_key, region_name=region_name)
-      AWSConnection.client = boto3.client('s3', aws_access_key_id_id=access_key_id, 
-                                     aws_secret_access_key_id=secret_access_key, region_name=region_name)
+      AWSConnection.resource = boto3.resource('s3', aws_access_key_id=access_key_id, 
+                                         aws_secret_access_key=secret_access_key, region_name=region_name)
+      AWSConnection.client = boto3.client('s3', aws_access_key_id=access_key_id, 
+                                     aws_secret_access_key=secret_access_key, region_name=region_name)
     self.resource = AWSConnection.resource
     self.client = AWSConnection.client
