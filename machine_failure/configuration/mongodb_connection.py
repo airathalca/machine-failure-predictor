@@ -36,10 +36,3 @@ class MongoDBClient:
     except Exception as e:
       logging.error(f"Error in cls MongoDBClient method __init__: {e}")
       raise CustomException(e,sys)
-    
-if __name__ == "__main__":
-  try:
-    mongo_client = MongoDBClient()
-    print(mongo_client)
-  except Exception as e:
-    print(e)

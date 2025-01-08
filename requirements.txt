@@ -1,8 +1,10 @@
 pandas
-scikit-learn
+scikit-learn==1.5.2
 numpy==1.26.4
-flask
-flask_cors
+fastapi
+uvicorn
+jinja2
+python-multipart
 mlflow
 dvc
 dvc-s3

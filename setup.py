@@ -14,7 +14,7 @@ def get_requirements(file_path: str) -> List[str]:
   return req
 
 setup(
-  name='Credit-Card-Fraud-Detection',
+  name='Machine-Failure-Detection',
   version='0.0.1',
   author='airathalca',
   author_email='airathalca@gmail.com',

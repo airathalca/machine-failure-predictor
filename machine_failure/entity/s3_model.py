@@ -17,7 +17,7 @@ class MachineFailureS3Model:
     try:
       return self.s3.s3_key_path_available(bucket_name=self.bucket_name, s3_key=model_path)
     except CustomException as e:
-      print(e)
+      logging.info(f"Error in cls MachineFailureS3Model method is_model_present: {e}")
       return False
 
   def load_model(self) -> MachineFailureModel:

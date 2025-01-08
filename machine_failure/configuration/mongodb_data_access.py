@@ -44,11 +44,3 @@ class MongoDataset:
     except Exception as e:
       logging.error(f"Error in class MongoDataset method export_collection_to_dataframe: {e}")
       raise CustomException(e,sys)
-    
-if __name__ == "__main__":
-  try:
-    machine_data = MongoDataset()
-    df = machine_data.export_collection_to_dataframe("machine_data_failure")
-    print(df.head())
-  except Exception as e:
-    print(e)

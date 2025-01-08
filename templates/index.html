@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machine Failure Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Machine Failure Prediction</h1>
+    <form id="predictionForm" class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Product ID -->
+        <div>
+          <label for="product_id" class="block text-sm font-medium text-gray-700">Product ID</label>
+          <input type="number" id="product_id" name="product_id" min="10000" max="60000" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter a number between 10000 and 60000">
+        </div>
+
+        <!-- Type -->
+        <div>
+          <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
+          <select id="type" name="type" required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="L">Low (L)</option>
+            <option value="M">Medium (M)</option>
+            <option value="H">High (H)</option>
+          </select>
+        </div>
+
+        <!-- Air Temperature (Kelvin) -->
+        <div>
+          <label for="air_temperature" class="block text-sm font-medium text-gray-700">Air Temperature (K)</label>
+          <input type="number" step="0.01" id="air_temperature" name="air_temperature" min="0" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter temperature in Kelvin">
+        </div>
+
+        <!-- Process Temperature (Kelvin) -->
+        <div>
+          <label for="process_temperature" class="block text-sm font-medium text-gray-700">Process Temperature (K)</label>
+          <input type="number" step="0.01" id="process_temperature" name="process_temperature" min="0" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter temperature in Kelvin">
+        </div>
+
+        <!-- Rotational Speed (RPM) -->
+        <div>
+          <label for="rotational_speed" class="block text-sm font-medium text-gray-700">Rotational Speed (RPM)</label>
+          <input type="number" id="rotational_speed" name="rotational_speed" min="0" max="5000" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter RPM between 0 and 5000">
+        </div>
+
+        <!-- Torque (Nm) -->
+        <div>
+          <label for="torque" class="block text-sm font-medium text-gray-700">Torque (Nm)</label>
+          <input type="number" step="0.01" id="torque" name="torque" min="0" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter torque in Nm">
+        </div>
+
+        <!-- Tool Wear (min) -->
+        <div>
+          <label for="tool_wear" class="block text-sm font-medium text-gray-700">Tool Wear (min)</label>
+          <input type="number" id="tool_wear" name="tool_wear" min="0" required
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                 placeholder="Enter tool wear in minutes">
+        </div>
+
+        <!-- TWF (Tool Wear Failure) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Tool Wear Failure (TWF)</label>
+          <div class="mt-1">
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="TWF" value="1" class="form-checkbox h-4 w-4 text-indigo-600">
+              <span class="ml-2">Check if failure occurred</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- HDF (Heat Dissipation Failure) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Heat Dissipation Failure (HDF)</label>
+          <div class="mt-1">
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="HDF" value="1" class="form-checkbox h-4 w-4 text-indigo-600">
+              <span class="ml-2">Check if failure occurred</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- PWF (Power Failure) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Power Failure (PWF)</label>
+          <div class="mt-1">
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="PWF" value="1" class="form-checkbox h-4 w-4 text-indigo-600">
+              <span class="ml-2">Check if failure occurred</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- OSF (Overstrain Failure) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Overstrain Failure (OSF)</label>
+          <div class="mt-1">
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="OSF" value="1" class="form-checkbox h-4 w-4 text-indigo-600">
+              <span class="ml-2">Check if failure occurred</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-6">
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          Predict Machine Failure
+        </button>
+      </div>
+    </form>
+
+    <!-- Prediction Result -->
+    <div id="predictionResult" class="mt-8 max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg hidden">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Prediction Result</h2>
+      <p id="resultText" class="text-lg text-gray-700"></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("predictionForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          body: formData
+        });
+        const result = await response.json();
+        if (result.status === "error") {
+          alert(`Error: ${result.error}`);
+        } else {
+          document.getElementById("resultText").textContent = result.status;
+          document.getElementById("predictionResult").classList.remove("hidden");
+        }
+      } catch (error) {
+        alert(`An error occurred: ${error.message}`);
+      }
+    });
+  </script>
+</body>
+</html>
