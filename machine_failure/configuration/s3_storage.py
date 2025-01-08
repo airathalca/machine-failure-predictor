@@ -28,6 +28,7 @@ class S3Storage:
       else:
           return False
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method s3_key_path_available: {e}")
       raise CustomException(e, sys)
       
   @staticmethod
@@ -43,6 +44,7 @@ class S3Storage:
       logging.info("Exited the read_object method of S3Operations class")
       return conv_func()
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method read_object: {e}")
       raise CustomException(e, sys)
 
   def get_bucket(self, bucket_name: str) -> Bucket:
@@ -52,6 +54,7 @@ class S3Storage:
       logging.info("Exited the get_bucket method of S3Operations class")
       return bucket
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method get_bucket: {e}")
       raise CustomException(e, sys)
 
   def get_file_object(self, filename: str, bucket_name: str) -> Union[List[object], object]:
@@ -64,6 +67,7 @@ class S3Storage:
       logging.info("Exited the get_file_object method of S3Operations class")
       return file_objs
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method get_file_object: {e}")
       raise CustomException(e, sys)
 
   def load_model(self, model_name: str, bucket_name: str, model_dir: str = None) -> object:
@@ -77,6 +81,7 @@ class S3Storage:
       logging.info("Exited the load_model method of S3Operations class")
       return model
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method load_model: {e}")
       raise CustomException(e, sys)
 
   def create_folder(self, folder_name: str, bucket_name: str) -> None:
@@ -110,6 +115,7 @@ class S3Storage:
         logging.info(f"Remove is set to {remove}, not deleted the file")
       logging.info("Exited the upload_file method of S3Operations class")
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method upload_file: {e}")
       raise CustomException(e, sys)
 
   def upload_df_as_csv(self,df: pd.DataFrame, local_filename: str, bucket_filename: str, bucket_name: str) -> None:
@@ -119,6 +125,7 @@ class S3Storage:
       self.upload_file(local_filename, bucket_filename, bucket_name)
       logging.info("Exited the upload_df_as_csv method of S3Operations class")
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method upload_df_as_csv: {e}")
       raise CustomException(e, sys)
 
   def get_df_from_object(self, object_: object) -> pd.DataFrame:
@@ -129,6 +136,7 @@ class S3Storage:
       logging.info("Exited the get_df_from_object method of S3Operations class")
       return df
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method get_df_from_object: {e}")
       raise CustomException(e, sys)
   
   def read_csv(self, filename: str, bucket_name: str) -> pd.DataFrame:
@@ -139,4 +147,5 @@ class S3Storage:
       logging.info("Exited the read_csv method of S3Operations class")
       return df
     except Exception as e:
+      logging.error(f"Error in cls S3Storage method read_csv: {e}")
       raise CustomException(e, sys)

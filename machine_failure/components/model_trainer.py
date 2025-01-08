@@ -32,7 +32,7 @@ class ModelTrainer:
       model_class = getattr(module, class_name)
       return model_class
     except Exception as e:
-      logging.error(f"Error importing model class: {str(e)}")
+      logging.error(f"Error in cls ModelTrainer method _get_model_class: {e}")
       raise CustomException(e, sys)
     
   def _optimize_model(self, model_name: str, model_config: Dict[str, Any], X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray) -> Dict[str, Any]:
@@ -74,7 +74,7 @@ class ModelTrainer:
 
       return study.best_params
     except Exception as e:
-      logging.error(f"Error optimizing model {model_name}: {str(e)}")
+      logging.error(f"Error in cls ModelTrainer method _optimize_model: {e}")
       raise CustomException(e, sys)
 
   def train_model(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray) -> Tuple[object, ClassificationMetricArtifact]:
@@ -114,7 +114,7 @@ class ModelTrainer:
 
       return voting_clf, metric_artifact
     except Exception as e:
-      logging.error(f"Error in training model: {str(e)}")
+      logging.error(f"Error in cls ModelTrainer method train_model: {e}")
       raise CustomException(e, sys)
 
   def get_model(self) -> ModelTrainerArtifact:
@@ -142,7 +142,7 @@ class ModelTrainer:
         metric_artifact=metric_artifact
       )
     except Exception as e:
-      logging.error(f"Error in getting model: {str(e)}")
+      logging.error(f"Error in cls ModelTrainer method get_model: {e}")
       raise CustomException(e, sys)
 
 if __name__ == "__main__":

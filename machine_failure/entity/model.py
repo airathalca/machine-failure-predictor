@@ -17,6 +17,7 @@ class MachineFailureModel:
       logging.info("Used the trained model to get predictions")
       return self.trained_model_object.predict(transformed_feature)
     except Exception as e:
+      logging.error(f"Error in cls MachineFailureModel method predict: {e}")
       raise CustomException(e, sys)
     
   def predict_proba(self, dataframe: pd.DataFrame) -> pd.DataFrame:
@@ -27,6 +28,7 @@ class MachineFailureModel:
       logging.info("Used the trained model to get predictions")
       return self.trained_model_object.predict_proba(transformed_feature)
     except Exception as e:
+      logging.error(f"Error in cls MachineFailureModel method predict_proba: {e}")
       raise CustomException(e, sys)
 
   def __repr__(self):

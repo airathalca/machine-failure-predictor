@@ -32,7 +32,7 @@ class DataIngestion:
 
       return df
     except Exception as e:
-      logging.info("Error in exporting raw data: {e}")
+      logging.error(f"Error in cls DataIngestion method export_raw_data: {e}")
       raise CustomException(e, sys)
     
   def split_data(self, df: pd.DataFrame) -> None:
@@ -50,7 +50,7 @@ class DataIngestion:
       logging.info('Train and Test data saved successfully')
 
     except Exception as e:
-      logging.info("Error in splitting data: {e}")
+      logging.error(f"Error in cls DataIngestion method split_data: {e}")
       raise CustomException(e, sys)
     
   def read_data(self) -> DataIngestionArtifact:
@@ -67,7 +67,7 @@ class DataIngestion:
 
       return data_ingestion_artifact
     except Exception as e:
-      logging.info("Data ingestion failed")
+      logging.error(f"Error in cls DataIngestion method read_data: {e}")
       raise CustomException(e, sys)
     
 if __name__ == "__main__":

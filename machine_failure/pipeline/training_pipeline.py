@@ -27,6 +27,7 @@ class TrainPipeline:
       logging.info("Train and test data fetched successfully from mongodb")
       return data_ingestion_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_data_ingestion: {e}")
       raise CustomException(e, sys)
 
   def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact) -> DataValidationArtifact:
@@ -37,6 +38,7 @@ class TrainPipeline:
       logging.info("Performed the data validation operation")
       return data_validation_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_data_validation: {e}")
       raise CustomException(e, sys)
 
   def start_data_transformation(self, data_ingestion_artifact: DataIngestionArtifact, data_validation_artifact: DataValidationArtifact) -> DataTransformationArtifact:
@@ -46,6 +48,7 @@ class TrainPipeline:
       data_transformation_artifact = data_transformation.transform_data()
       return data_transformation_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_data_transformation: {e}")
       raise CustomException(e, sys)
 
   def start_model_trainer(self, data_transformation_artifact: DataTransformationArtifact) -> ModelTrainerArtifact:
@@ -54,6 +57,7 @@ class TrainPipeline:
       model_trainer_artifact = model_trainer.get_model()
       return model_trainer_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_model_trainer: {e}")
       raise CustomException(e, sys)
 
   def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact, model_trainer_artifact: ModelTrainerArtifact) -> ModelEvaluationArtifact:
@@ -63,6 +67,7 @@ class TrainPipeline:
       model_evaluation_artifact = model_evaluation.evaluate_model()
       return model_evaluation_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_model_evaluation: {e}")
       raise CustomException(e, sys)
   
   def start_model_pusher(self, model_evaluation_artifact: ModelEvaluationArtifact) -> ModelPusherArtifact:
@@ -71,6 +76,7 @@ class TrainPipeline:
       model_pusher_artifact = model_pusher.push_model()
       return model_pusher_artifact
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method start_model_pusher: {e}")
       raise CustomException(e, sys)
 
   def run_pipeline(self) -> None:
@@ -88,6 +94,7 @@ class TrainPipeline:
       self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
       return None
     except Exception as e:
+      logging.error(f"Error in cls TrainPipeline method run_pipeline: {e}")
       raise CustomException(e, sys)
 
 if __name__ == '__main__':

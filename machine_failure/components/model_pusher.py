@@ -23,4 +23,5 @@ class ModelPusher:
       logging.info(f"Model pusher artifact: [{model_pusher_artifact}]")
       return model_pusher_artifact
     except Exception as e:
+      logging.error(f"Error in push_model method of ModelPusher class: {e}")
       raise CustomException(e, sys)

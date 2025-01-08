@@ -25,7 +25,7 @@ class DataValidation:
       logging.info(f'Total number of columns in the dataframe and schema are the same: {total_cols}')
       return total_cols
     except Exception as e:
-      logging.info("Error in validating total columns: {e}")
+      logging.error(f"Error in cls DataValidation method validate_total_columns: {e}")
       raise CustomException(e, sys)
 
   def validate_columns(self, df: pd.DataFrame) -> bool:
@@ -51,7 +51,7 @@ class DataValidation:
 
       return all_exist                          
     except Exception as e:
-      logging.info("Error in validating columns: {e}")
+      logging.error(f"Error in cls DataValidation method validate_columns: {e}")
       raise CustomException(e, sys)
     
   def detect_dataset_drift(self, train_df: pd.DataFrame, test_df: pd.DataFrame) -> bool:
@@ -74,6 +74,7 @@ class DataValidation:
       logging.info(f"{n_drifted_features}/{n_features} drift detected.")
       return drift_status
     except Exception as e:
+      logging.error(f"Error in cls DataValidation method detect_dataset_drift: {e}")
       raise CustomException(e, sys)
 
   def validate_data(self) -> DataValidationArtifact:
@@ -115,5 +116,5 @@ class DataValidation:
         drift_report_file_path=self.config.drift_report_yaml_file_path
       )
     except Exception as e:
-      logging.info("Error in validating data: {e}")
+      logging.error(f"Error in cls DataValidation method validate_data: {e}")
       raise CustomException(e, sys)

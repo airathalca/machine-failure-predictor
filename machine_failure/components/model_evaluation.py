@@ -36,6 +36,7 @@ class ModelEvaluation:
       return None
 
     except Exception as e:
+      logging.error(f"Error in cls ModelEvaluation method get_bucket_model: {e}")
       raise CustomException(e, sys)
 
   def evaluate_model(self) -> ModelEvaluationArtifact:
@@ -66,10 +67,11 @@ class ModelEvaluation:
       else:
         roc_auc = 0
         f1 = 0
-
+      logging.info(f'bucket model roc_auc: {roc_auc}, current model roc_auc: {self.model_trainer_artifact.metric_artifact.roc_auc_score}')
       is_model_accepted = self.model_trainer_artifact.metric_artifact.roc_auc_score > roc_auc
       logging.info('Model evaluation completed')
       return ModelEvaluationArtifact(model_accepted=is_model_accepted, s3_model_path=self.config.s3_model_key_path, 
                                      trained_model_path=self.model_trainer_artifact.trained_model_file_path)
     except Exception as e:
+      logging.error(f"Error in cls ModelEvaluation method evaluate_model: {e}")
       raise CustomException(e, sys)

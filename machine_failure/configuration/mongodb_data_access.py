@@ -19,6 +19,7 @@ class MongoDataset:
     try:
       self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
     except Exception as e:
+      logging.error(f"Error in cls MongoDataset method __init__: {e}")
       raise CustomException(e,sys)
       
   def export_collection_to_dataframe(self, collection_name:str, database_name:Optional[str] = None)-> pd.DataFrame:
@@ -38,7 +39,7 @@ class MongoDataset:
       df.replace({"na":np.nan},inplace=True)
       return df
     except Exception as e:
-      logging.error(f"Error in exporting collection to dataframe: {e}")
+      logging.error(f"Error in class MongoDataset method export_collection_to_dataframe: {e}")
       raise CustomException(e,sys)
     
 if __name__ == "__main__":

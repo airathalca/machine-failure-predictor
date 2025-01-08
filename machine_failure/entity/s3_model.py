@@ -3,6 +3,7 @@ import pandas as pd
 
 from machine_failure.configuration.s3_storage import S3Storage
 from machine_failure.exception.custom_exception import CustomException
+from machine_failure.logger.custom_logging import logging
 from machine_failure.entity.model import MachineFailureModel
 
 class MachineFailureS3Model:
@@ -28,6 +29,7 @@ class MachineFailureS3Model:
         self.loaded_model = self.load_model()
       return self.loaded_model.predict(df)
     except Exception as e:
+      logging.error(f"Error in cls MachineFailureS3Model method predict: {e}")
       raise CustomException(e, sys)
     
   def predict_proba(self,df: pd.DataFrame):
@@ -36,4 +38,5 @@ class MachineFailureS3Model:
         self.loaded_model = self.load_model()
       return self.loaded_model.predict_proba(df)
     except Exception as e:
+      logging.error(f"Error in cls MachineFailureS3Model method predict_proba: {e}")
       raise CustomException(e, sys)

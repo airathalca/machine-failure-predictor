@@ -33,7 +33,7 @@ class MongoDBClient:
       self.database_name = database_name
       logging.info("MongoDB connection successfully established")
     except Exception as e:
-      logging.error(f"Error in connecting to MongoDB: {e}")
+      logging.error(f"Error in cls MongoDBClient method __init__: {e}")
       raise CustomException(e,sys)
     
 if __name__ == "__main__":

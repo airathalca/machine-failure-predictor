@@ -4,7 +4,7 @@ def error_msg_detail(error, error_detail: sys):
   _, _, traceback = error_detail.exc_info()
   filename = traceback.tb_frame.f_code.co_filename
   line_number = traceback.tb_lineno
-  error_msg = f"Error: {error} in {filename} at line {line_number}"
+  error_msg = f"{error} in {filename} at line {line_number}"
 
   return error_msg
 

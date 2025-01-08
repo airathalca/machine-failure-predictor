@@ -66,7 +66,7 @@ class DataTransformation:
 
       return full_preprocessor
     except Exception as e:
-      logging.info("Error in creating preprocessor: {e}")
+      logging.error("Error in cls DataTransformation method create_preprocessor: {e}")
       raise CustomException(e, sys)
     
   def transform_data(self) -> DataTransformationArtifact:
@@ -119,5 +119,5 @@ class DataTransformation:
         transformed_object_file_path=self.config.transformed_object_file_path
       )
     except Exception as e:
-      logging.info("Data transformation failed: {e}")
+      logging.error(f"Error in cls DataTransformation method transform_data: {e}")
       raise CustomException(e, sys)
