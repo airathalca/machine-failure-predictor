@@ -29,8 +29,8 @@ stages:
       size: 2420
     - path: machine_failure/pipeline/training_pipeline.py
       hash: md5
-      md5: dd9ca10740ae4d566eb28adaccc74217
-      size: 8304
+      md5: b8781b0e752c8b5cfbb8e229e17f12b5
+      size: 8344
     outs:
     - path: artifact/data_ingestion/data.csv
       hash: md5
@@ -38,23 +38,23 @@ stages:
       size: 7317580
     - path: artifact/data_ingestion/split/test.csv
       hash: md5
-      md5: 038068b907db6a1275ba7071b9dcca62
-      size: 1463632
+      md5: f959a8e503ffaa3292efc84fb18150af
+      size: 1463787
     - path: artifact/data_ingestion/split/train.csv
       hash: md5
-      md5: 6b13c831af284bb6863f309878834ff5
-      size: 5854099
+      md5: 3257f9f5a7fb3715e4c3e5cbf4bcddfd
+      size: 5853944
   data_validation_and_transformation:
     cmd: python machine_failure/pipeline/training_pipeline.py data_validation_and_transformation
     deps:
     - path: artifact/data_ingestion/split/test.csv
       hash: md5
-      md5: 038068b907db6a1275ba7071b9dcca62
-      size: 1463632
+      md5: f959a8e503ffaa3292efc84fb18150af
+      size: 1463787
     - path: artifact/data_ingestion/split/train.csv
       hash: md5
-      md5: 6b13c831af284bb6863f309878834ff5
-      size: 5854099
+      md5: 3257f9f5a7fb3715e4c3e5cbf4bcddfd
+      size: 5853944
     - path: config/param.yaml
       hash: md5
       md5: 8a385e6ff5d5462a3e14883d0c7981c3
@@ -77,39 +77,39 @@ stages:
       size: 2420
     - path: machine_failure/pipeline/training_pipeline.py
       hash: md5
-      md5: dd9ca10740ae4d566eb28adaccc74217
-      size: 8304
+      md5: b8781b0e752c8b5cfbb8e229e17f12b5
+      size: 8344
     outs:
     - path: artifact/data_transformation/data/test.npy
       hash: md5
-      md5: f85b1f3ff6e3f001c476351f72c4f3cf
+      md5: b8d7dae189d305c5305d96840e6b1c9d
       size: 3492736
     - path: artifact/data_transformation/data/train.npy
       hash: md5
-      md5: 10b9fd617cc87005e0f271985b6c84ea
+      md5: 9a149047925a3d2f4bda493e23d15f4b
       size: 13970432
     - path: artifact/data_transformation/preprocessor.pkl
       hash: md5
-      md5: a47b5d22c560037290c60a4bcec3519e
+      md5: 547b6344bbb4e21e52e4938acdeefcd8
       size: 3023
   train_evaluate_and_push:
     cmd: python machine_failure/pipeline/training_pipeline.py train_evaluate_and_push
     deps:
     - path: artifact/data_ingestion/split/test.csv
       hash: md5
-      md5: 038068b907db6a1275ba7071b9dcca62
-      size: 1463632
+      md5: f959a8e503ffaa3292efc84fb18150af
+      size: 1463787
     - path: artifact/data_transformation/data/test.npy
       hash: md5
-      md5: f85b1f3ff6e3f001c476351f72c4f3cf
+      md5: b8d7dae189d305c5305d96840e6b1c9d
       size: 3492736
     - path: artifact/data_transformation/data/train.npy
       hash: md5
-      md5: 10b9fd617cc87005e0f271985b6c84ea
+      md5: 9a149047925a3d2f4bda493e23d15f4b
       size: 13970432
     - path: artifact/data_transformation/preprocessor.pkl
       hash: md5
-      md5: a47b5d22c560037290c60a4bcec3519e
+      md5: 547b6344bbb4e21e52e4938acdeefcd8
       size: 3023
     - path: config/param.yaml
       hash: md5
@@ -145,10 +145,10 @@ stages:
       size: 2420
     - path: machine_failure/pipeline/training_pipeline.py
       hash: md5
-      md5: dd9ca10740ae4d566eb28adaccc74217
-      size: 8304
+      md5: b8781b0e752c8b5cfbb8e229e17f12b5
+      size: 8344
     outs:
     - path: artifact/model_trainer/model.pkl
       hash: md5
-      md5: a6be8551a6c79708b3e9b0c57d4eeeeb
-      size: 51313942
+      md5: 79c0f9a18f7771899be6248d0bf96e63
+      size: 87495327

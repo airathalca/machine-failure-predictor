@@ -136,7 +136,8 @@ def main():
                                                          transformation_config.transformed_test_file_path)
     trainer_artifact = pipeline.start_model_trainer(transformation_artifact)
     eval_artifact = pipeline.start_model_evaluation(ingestion_artifact, trainer_artifact)
-    pipeline.start_model_pusher(eval_artifact)
+    if eval_artifact.model_accepted:
+      pipeline.start_model_pusher(eval_artifact)
 
   elif args.stage == 'full_pipeline':
     pipeline.run_pipeline()
