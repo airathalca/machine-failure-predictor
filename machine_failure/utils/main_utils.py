@@ -13,11 +13,9 @@ def read_yaml_file(file_path: str) -> dict:
   Read yaml file
   file_path: str location of file to read
   """
-  logging.info("Entered the read_yaml_file method of utils")
   try:
     with open(file_path, "rb") as yaml_file:
       return yaml.safe_load(yaml_file)
-    logging.info(f"Exiting the read_yaml_file. {file_path} read successfully")
   except Exception as e:
     logging.error(f"Error in read_yaml_file: {e}")
     raise CustomException(e, sys)
@@ -29,7 +27,6 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
   content: object data to write
   replace: bool replace file if exists
   """
-  logging.info("Entered the write_yaml_file method of utils")
   try:
     if replace:
       if os.path.exists(file_path):
@@ -37,7 +34,6 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "w") as file:
       yaml.dump(content, file)
-    logging.info(f"Exiting the write_yaml_file. {file_path} written successfully")
   except Exception as e:
     logging.error(f"Error in write_yaml_file: {e}")
     raise CustomException(e, sys)
@@ -48,12 +44,10 @@ def save_object(file_path: str, obj: object) -> None:
   file_path: str location of file to save
   obj: object data to save
   """
-  logging.info("Entered the save_object method of utils")
   try:
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "wb") as file_obj:
       dill.dump(obj, file_obj)
-    logging.info(f"Exiting the save_object. {file_path} saved successfully")
   except Exception as e:
     logging.error(f"Error in save_object: {e}")
     raise CustomException(e, sys)
@@ -63,11 +57,9 @@ def load_object(file_path: str) -> object:
   Load object from file
   file_path: str location of file to load
   """
-  logging.info("Entered the load_object method of utils")
   try:
     with open(file_path, "rb") as file_obj:
       obj = dill.load(file_obj)
-    logging.info(f"Exiting the load_object. {file_path} loaded successfully")
     return obj
   except Exception as e:
     logging.error(f"Error in load_object: {e}")
@@ -79,13 +71,11 @@ def save_numpy_array_data(file_path: str, array: np.array):
   file_path: str location of file to save
   array: np.array data to save
   """
-  logging.info("Entered the save_numpy_array_data method of utils")
   try:
     dir_path = os.path.dirname(file_path)
     os.makedirs(dir_path, exist_ok=True)
     with open(file_path, 'wb') as file_obj:
       np.save(file_obj, array)
-    logging.info(f"Exiting the save_numpy_array_data. {file_path} saved successfully")
   except Exception as e:
     logging.error(f"Error in save_numpy_array_data: {e}")
     raise CustomException(e, sys)
@@ -96,11 +86,9 @@ def load_numpy_array_data(file_path: str) -> np.array:
   file_path: str location of file to load
   return: np.array data loaded
   """
-  logging.info("Entered the load_numpy_array_data method of utils")
   try:
     with open(file_path, 'rb') as file_obj:
       return np.load(file_obj)
-    logging.info(f"Exiting the load_numpy_array_data. {file_path} loaded successfully")
   except Exception as e:
     logging.error(f"Error in load_numpy_array_data: {e}")
     raise CustomException(e, sys)
@@ -111,10 +99,8 @@ def read_csv(file_path: str) -> pd.DataFrame:
   file_path: str location of file to read
   return: pandas DataFrame
   """
-  logging.info("Entered the read_csv method of utils")
   try:
     df = pd.read_csv(file_path)
-    logging.info(f"Exiting the read_csv. {file_path} read successfully")
     return df
   except Exception as e:
     logging.error(f"Error in read_csv: {e}")
@@ -126,10 +112,8 @@ def write_csv(file_path: str, df: pd.DataFrame) -> None:
   file_path: str location of file to write
   df: pandas DataFrame
   """
-  logging.info("Entered the write_csv method of utils")
   try:
     df.to_csv(file_path, index=False, header=True)
-    logging.info(f"Exiting the write_csv. {file_path} written successfully")
   except Exception as e:
     logging.error(f"Error in write_csv: {e}")
     raise CustomException(e, sys)
@@ -140,10 +124,8 @@ def drop_columns(df: pd.DataFrame, cols: list)-> pd.DataFrame:
   df: pandas DataFrame
   cols: list of columns to be dropped
   """
-  logging.info("Entered the drop_columns method of utils")
   try:
     df = df.drop(columns=cols, axis=1)
-    logging.info(f"Exiting the drop_columns. Columns {cols} dropped successfully")
     return df
   except Exception as e:
     logging.error(f"Error in drop_columns: {e}")

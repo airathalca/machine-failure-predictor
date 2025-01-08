@@ -1,0 +1,53 @@
+vars:
+  - config/param.yaml
+
+stages:
+  data_ingestion:
+    cmd: python machine_failure/pipeline/training_pipeline.py data_ingestion
+    deps:
+      - machine_failure/pipeline/training_pipeline.py
+      - machine_failure/entity/artifact_entity.py
+      - machine_failure/entity/config_entity.py
+      - machine_failure/configuration/mongodb_connection.py
+      - machine_failure/configuration/mongodb_data_access.py
+      - machine_failure/components/data_ingestion.py
+      - config/param.yaml
+    outs:
+      - ${artifact.dir}/${data_ingestion.dir_name}/${artifact.raw_file_name}
+      - ${artifact.dir}/${data_ingestion.dir_name}/${data_ingestion.split_dir_name}/${artifact.train_file_name}
+      - ${artifact.dir}/${data_ingestion.dir_name}/${data_ingestion.split_dir_name}/${artifact.test_file_name}
+
+  data_validation_and_transformation:
+    cmd: python machine_failure/pipeline/training_pipeline.py data_validation_and_transformation
+    deps:
+      - machine_failure/pipeline/training_pipeline.py
+      - machine_failure/entity/artifact_entity.py
+      - machine_failure/entity/config_entity.py
+      - machine_failure/components/data_transformation.py
+      - machine_failure/components/data_validation.py
+      - config/param.yaml
+      - ${artifact.dir}/${data_ingestion.dir_name}/${data_ingestion.split_dir_name}/${artifact.train_file_name}
+      - ${artifact.dir}/${data_ingestion.dir_name}/${data_ingestion.split_dir_name}/${artifact.test_file_name}
+    outs:
+      - ${artifact.dir}/${data_transformation.dir_name}/${artifact.preprocessor_file_name}
+      - ${artifact.dir}/${data_transformation.dir_name}/${data_transformation.data_dir_name}/train.npy
+      - ${artifact.dir}/${data_transformation.dir_name}/${data_transformation.data_dir_name}/test.npy
+
+  train_evaluate_and_push:
+    cmd: python machine_failure/pipeline/training_pipeline.py train_evaluate_and_push
+    deps:
+      - machine_failure/pipeline/training_pipeline.py
+      - machine_failure/entity/artifact_entity.py
+      - machine_failure/entity/config_entity.py
+      - machine_failure/components/model_trainer.py
+      - machine_failure/components/model_evaluation.py
+      - machine_failure/components/model_pusher.py
+      - machine_failure/configuration/aws_connection.py
+      - machine_failure/configuration/s3_storage.py
+      - config/param.yaml
+      - ${artifact.dir}/${data_transformation.dir_name}/${artifact.preprocessor_file_name}
+      - ${artifact.dir}/${data_transformation.dir_name}/${data_transformation.data_dir_name}/train.npy
+      - ${artifact.dir}/${data_transformation.dir_name}/${data_transformation.data_dir_name}/test.npy
+      - ${artifact.dir}/${data_ingestion.dir_name}/${data_ingestion.split_dir_name}/${artifact.test_file_name}
+    outs:
+      - ${artifact.dir}/${model_trainer.dir_name}/${artifact.model_file_name}

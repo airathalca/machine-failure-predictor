@@ -22,7 +22,7 @@ class ModelTrainer:
   def __init__(self, data_transformation_artifact: DataTransformationArtifact):
     self.config = ModelTrainerConfig()
     self.transformation_artifact = data_transformation_artifact
-    self.schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["model_trainer_config_file_path"]))
+    self.model_schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["model_trainer_config_file_path"]))
 
   def _get_model_class(self, model_config: Dict[str, Any]) -> Any:
     logging.info("Entered the _get_model_class method of ModelTrainer class")

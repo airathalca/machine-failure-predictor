@@ -117,7 +117,7 @@ def main():
 
   pipeline = TrainPipeline()
 
-  if args.stage == 'data_ingestionn':
+  if args.stage == 'data_ingestion':
     pipeline.start_data_ingestion()
 
   elif args.stage == 'data_validation_and_transformation':
