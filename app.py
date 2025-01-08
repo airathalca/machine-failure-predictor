@@ -66,11 +66,12 @@ async def predictRouteClient(request: Request):
     df = machine_data.convert_to_pandas()
     value = model.predict(df)[0]
     status = 'Machine Failure' if value == 1 else 'Machine is OK'
+    color = "text-red-600" if value == 1 else "text-green-600"
 
-    return JSONResponse(content={"status": status})
+    return JSONResponse(content={"status": status, "color": color})
       
   except Exception as e:
-    return JSONResponse(content={"status": "error", "error": str(e)}, status_code=500)
+    return JSONResponse(content={"status": "error", "error": str(e), "color": "text-red-600"}, status_code=500)
 
 if __name__ == "__main__":
   app_run(app, host='0.0.0.0', port=3000)

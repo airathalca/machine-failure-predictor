@@ -140,12 +140,15 @@
           body: formData
         });
         const result = await response.json();
+        resultText = document.getElementById("resultText");
         if (result.status === "error") {
-          alert(`Error: ${result.error}`);
+          resultText.textContent = result.error;
         } else {
-          document.getElementById("resultText").textContent = result.status;
-          document.getElementById("predictionResult").classList.remove("hidden");
+          resultText.textContent = result.status;
         }
+        resultText.classList.remove("text-green-600", "text-red-600");
+        resultText.classList.add(result.color);
+        document.getElementById("predictionResult").classList.remove("hidden");
       } catch (error) {
         alert(`An error occurred: ${error.message}`);
       }

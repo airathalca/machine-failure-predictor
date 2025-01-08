@@ -1,0 +1,6 @@
+logs/
+mlruns/
+template.py
+venv/
+notebooks/
+README.md

@@ -1,0 +1,19 @@
+services:
+  airflow:
+    build:
+      context: ./
+      dockerfile: Dockerfile.airflow
+    image: airflowimage
+    container_name: machine-failure-prediction-airflow
+    ports:
+      - "8080:8080" #Airflow webserver
+      - "5050:5050" #MLflow tracking server
+    
+  flaskapp:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: FastAPIimage
+    container_name: machine-failure-prediction-app
+    ports:
+      - "3000:3000"
