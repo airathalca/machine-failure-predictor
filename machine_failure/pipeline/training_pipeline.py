@@ -1,4 +1,6 @@
+import argparse
 import sys
+
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
 from machine_failure.components.data_ingestion import DataIngestion
@@ -7,12 +9,13 @@ from machine_failure.components.data_transformation import DataTransformation
 from machine_failure.components.model_trainer import ModelTrainer
 from machine_failure.components.model_evaluation import ModelEvaluation
 from machine_failure.components.model_pusher import ModelPusher
-from machine_failure.entity.artifact_entity import (ClassificationMetricArtifact, DataIngestionArtifact,
+from machine_failure.entity.artifact_entity import (DataIngestionArtifact,
                                             DataValidationArtifact,
                                             DataTransformationArtifact,
                                             ModelTrainerArtifact,
                                             ModelEvaluationArtifact,
                                             ModelPusherArtifact)
+from machine_failure.entity.config_entity import DataIngestionConfig, DataTransformationConfig
 
 class TrainPipeline:
   def __init__(self):
@@ -106,6 +109,37 @@ class TrainPipeline:
       logging.error(f"Error in cls TrainPipeline method run_pipeline: {e}")
       raise CustomException(e, sys)
 
+def main():
+  parser = argparse.ArgumentParser(description="Training pipeline")
+  parser.add_argument('stage', choices=['data_ingestion', 'data_validation_and_transformation', 'train_evaluate_and_push', 'full_pipeline'], 
+                      help="Specify the stage of the pipeline to run.")
+  args = parser.parse_args()
+
+  pipeline = TrainPipeline()
+
+  if args.stage == 'data_ingestionn':
+    pipeline.start_data_ingestion()
+
+  elif args.stage == 'data_validation_and_transformation':
+    ingestion_config = DataIngestionConfig()
+    ingestion_artifact = DataIngestionArtifact(ingestion_config.training_file_path, ingestion_config.testing_file_path)
+    validation_artifact = pipeline.start_data_validation(ingestion_artifact)
+    pipeline.start_data_transformation(ingestion_artifact, validation_artifact)
+    
+
+  elif args.stage == 'train_evaluate_and_push':
+    ingestion_config = DataIngestionConfig()
+    ingestion_artifact = DataIngestionArtifact(ingestion_config.training_file_path, ingestion_config.testing_file_path)
+    transformation_config = DataTransformationConfig()
+    transformation_artifact = DataTransformationArtifact(transformation_config.transformed_object_file_path, 
+                                                         transformation_config.transformed_train_file_path,
+                                                         transformation_config.transformed_test_file_path)
+    trainer_artifact = pipeline.start_model_trainer(transformation_artifact)
+    eval_artifact = pipeline.start_model_evaluation(ingestion_artifact, trainer_artifact)
+    pipeline.start_model_pusher(eval_artifact)
+
+  elif args.stage == 'full_pipeline':
+    pipeline.run_pipeline()
+
 if __name__ == '__main__':
-  train_pipeline = TrainPipeline()
-  train_pipeline.run_pipeline()
+    main()

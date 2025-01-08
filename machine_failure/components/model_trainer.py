@@ -10,18 +10,19 @@ from machine_failure.logger.custom_logging import logging
 from machine_failure.utils.main_utils import load_numpy_array_data, read_yaml_file, load_object, save_object
 from machine_failure.entity.config_entity import ModelTrainerConfig
 from machine_failure.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
-from machine_failure.constants import CONFIG_DIR, MODEL_TRAINER_CONFIG_FILE_PATH
 
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import confusion_matrix, roc_auc_score, f1_score
 from sklearn.ensemble import VotingClassifier
 import optuna
 
+params = read_yaml_file("config/param.yaml")
+
 class ModelTrainer:
   def __init__(self, data_transformation_artifact: DataTransformationArtifact):
     self.config = ModelTrainerConfig()
     self.transformation_artifact = data_transformation_artifact
-    self.model_schema = read_yaml_file(os.path.join(CONFIG_DIR, MODEL_TRAINER_CONFIG_FILE_PATH))
+    self.schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["model_trainer_config_file_path"]))
 
   def _get_model_class(self, model_config: Dict[str, Any]) -> Any:
     logging.info("Entered the _get_model_class method of ModelTrainer class")

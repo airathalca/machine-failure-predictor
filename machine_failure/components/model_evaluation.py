@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 from sklearn.metrics import f1_score, roc_auc_score
-from machine_failure.constants import CONFIG_DIR, SCHEMA_FILE_PATH
 from machine_failure.entity.s3_model import MachineFailureS3Model
 from machine_failure.utils.main_utils import drop_columns, read_yaml_file
 from machine_failure.logger.custom_logging import logging
@@ -17,12 +16,14 @@ from machine_failure.entity.artifact_entity import DataIngestionArtifact, ModelT
 import mlflow
 import mlflow.sklearn
 
+params = read_yaml_file("config/param.yaml")
+
 class ModelEvaluation:
   def __init__(self, model_trainer_artifact: ModelTrainerArtifact, data_ingestion_artifact: DataIngestionArtifact):
     self.config = ModelBucketConfig()
     self.model_trainer_artifact = model_trainer_artifact
     self.ingestion_artifact = data_ingestion_artifact
-    self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
+    self.schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["schema_file_path"]))
 
   def get_bucket_model(self) -> Optional[MachineFailureS3Model]:
     logging.info('Entered the get_bucket_model method of ModelEvaluation class')

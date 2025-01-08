@@ -12,7 +12,8 @@ from machine_failure.logger.custom_logging import logging
 from machine_failure.utils.main_utils import drop_columns, read_yaml_file, read_csv, save_numpy_array_data, save_object
 from machine_failure.entity.config_entity import DataTransformationConfig
 from machine_failure.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact, DataTransformationArtifact
-from machine_failure.constants import CONFIG_DIR, SCHEMA_FILE_PATH
+
+params = read_yaml_file("config/param.yaml")
 
 class FeatureGenerator(BaseEstimator, TransformerMixin):
   def fit(self, X, y=None):
@@ -33,7 +34,7 @@ class DataTransformation:
     self.config = DataTransformationConfig()
     self.ingestion_artifact = data_ingestion_artifact
     self.validation_artifact = data_validation_artifact
-    self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
+    self.schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["schema_file_path"]))
 
   def create_preprocessor(self) -> Pipeline:
     logging.info("Entered the create_preprocessor method of DataTransformation class")

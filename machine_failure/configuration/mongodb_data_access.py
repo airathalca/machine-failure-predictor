@@ -4,9 +4,11 @@ import sys
 from typing import Optional
 
 from machine_failure.configuration.mongodb_connection import MongoDBClient
-from machine_failure.constants import DATABASE_NAME
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
+from machine_failure.utils.main_utils import read_yaml_file
+
+params = read_yaml_file("config/param.yaml")
 
 class MongoDataset:
   """
@@ -17,7 +19,7 @@ class MongoDataset:
   """
   def __init__(self):
     try:
-      self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
+      self.mongo_client = MongoDBClient(database_name=params["database"]["name"])
     except Exception as e:
       logging.error(f"Error in cls MongoDataset method __init__: {e}")
       raise CustomException(e,sys)

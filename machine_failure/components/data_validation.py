@@ -7,16 +7,17 @@ from machine_failure.logger.custom_logging import logging
 from machine_failure.utils.main_utils import read_yaml_file, write_yaml_file, read_csv
 from machine_failure.entity.config_entity import DataValidationConfig
 from machine_failure.entity.artifact_entity import DataValidationArtifact, DataIngestionArtifact
-from machine_failure.constants import CONFIG_DIR, SCHEMA_FILE_PATH
 
 from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
+
+params = read_yaml_file("config/param.yaml")
 
 class DataValidation:
   def __init__(self, data_ingestion_artifact: DataIngestionArtifact):
     self.config = DataValidationConfig()
     self.ingestion_artifact = data_ingestion_artifact
-    self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
+    self.schema = read_yaml_file(os.path.join(params["config"]["dir"], params["config"]["schema_file_path"]))
 
   def validate_total_columns(self, df: pd.DataFrame) -> bool:
     logging.info("Entered the validate_total_columns method of DataValidation class")

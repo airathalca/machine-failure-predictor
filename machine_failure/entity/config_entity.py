@@ -1,37 +1,39 @@
 import os
-from machine_failure.constants import *
+from machine_failure.utils.main_utils import read_yaml_file
 from dataclasses import dataclass
+
+params = read_yaml_file("config/param.yaml")
 
 @dataclass
 class DataIngestionConfig:
-  data_ingestion_dir: str = os.path.join(ARTIFACT_DIR, DATA_INGESTION_DIR_NAME)
-  raw_file_path: str = os.path.join(data_ingestion_dir, RAW_FILE_NAME)
-  training_file_path: str = os.path.join(data_ingestion_dir,  DATA_SPLIT_DIR_NAME, TRAIN_FILE_NAME)
-  testing_file_path: str = os.path.join(data_ingestion_dir, DATA_SPLIT_DIR_NAME, TEST_FILE_NAME)
-  train_test_split_ratio: float = DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
-  collection_name:str = DATA_INGESTION_COLLECTION_NAME
+  data_ingestion_dir: str = os.path.join(params["artifact"]["dir"], params["data_ingestion"]["dir_name"])
+  raw_file_path: str = os.path.join(data_ingestion_dir, params["artifact"]["raw_file_name"])
+  training_file_path: str = os.path.join(data_ingestion_dir, params["data_ingestion"]["split_dir_name"], params["artifact"]["train_file_name"])
+  testing_file_path: str = os.path.join(data_ingestion_dir, params["data_ingestion"]["split_dir_name"], params["artifact"]["test_file_name"])
+  train_test_split_ratio: float = params["data_ingestion"]["train_test_split_ratio"]
+  collection_name: str = params["database"]["collection"]
 
 @dataclass
 class DataValidationConfig:
-  data_validation_dir: str = os.path.join(ARTIFACT_DIR, DATA_VALIDATION_DIR_NAME)
-  drift_report_yaml_file_path: str = os.path.join(data_validation_dir, DATA_VALIDATION_REPORT_YAML_FILE_NAME)
-  drift_report_html_file_path: str = os.path.join(data_validation_dir, DATA_VALIDATION_REPORT_HTML_FILE_NAME)
+  data_validation_dir: str = os.path.join(params["artifact"]["dir"], params["data_validation"]["dir_name"])
+  drift_report_yaml_file_path: str = os.path.join(data_validation_dir, params["data_validation"]["report_yaml_file_name"])
+  drift_report_html_file_path: str = os.path.join(data_validation_dir, params["data_validation"]["report_html_file_name"])
 
 @dataclass
 class DataTransformationConfig:
-  data_transformation_dir: str = os.path.join(ARTIFACT_DIR, DATA_TRANSFORMATION_DIR_NAME)
-  transformed_train_file_path: str = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_DATA_DIR_NAME, TRAIN_FILE_NAME.replace("csv", "npy"))
-  transformed_test_file_path: str = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_DATA_DIR_NAME, TEST_FILE_NAME.replace("csv", "npy"))
-  transformed_object_file_path: str = os.path.join(data_transformation_dir, PREPROCESSOR_FILE_NAME)
+  data_transformation_dir: str = os.path.join(params["artifact"]["dir"], params["data_transformation"]["dir_name"])
+  transformed_train_file_path: str = os.path.join(data_transformation_dir, params["data_transformation"]["data_dir_name"], params["artifact"]["train_file_name"].replace("csv", "npy"))
+  transformed_test_file_path: str = os.path.join(data_transformation_dir, params["data_transformation"]["data_dir_name"], params["artifact"]["test_file_name"].replace("csv", "npy"))
+  transformed_object_file_path: str = os.path.join(data_transformation_dir, params["artifact"]["preprocessor_file_name"])
 
 @dataclass
 class ModelTrainerConfig:
-  model_trainer_dir: str = os.path.join(ARTIFACT_DIR, MODEL_TRAINER_DIR_NAME)
-  trained_model_file_path: str = os.path.join(model_trainer_dir, MODEL_FILE_NAME)
-  expected_metric: float = MODEL_TRAINER_EXPECTED_SCORE
-  model_config_file_path: str = MODEL_TRAINER_CONFIG_FILE_PATH
+  model_trainer_dir: str = os.path.join(params["artifact"]["dir"], params["model_trainer"]["dir_name"])
+  trained_model_file_path: str = os.path.join(model_trainer_dir, params["artifact"]["model_file_name"])
+  expected_metric: float = params["model_trainer"]["expected_roc_score"]
+  model_config_file_path: str = params["config"]["model_trainer_config_file_path"]
 
 @dataclass
 class ModelBucketConfig:
-  bucket_name: str = MODEL_BUCKET_NAME
-  s3_model_key_path: str = MODEL_FILE_NAME
+  bucket_name: str = params["cloud"]["model_bucket_name"]
+  s3_model_key_path: str = params["artifact"]["model_file_name"]

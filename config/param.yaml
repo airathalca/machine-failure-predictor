@@ -1,0 +1,37 @@
+database:
+  name: "machine-data"
+  collection: "machine_data_failure"
+
+artifact:
+  dir: "artifact"
+  train_file_name: "train.csv"
+  test_file_name: "test.csv"
+  raw_file_name: "data.csv"
+  model_file_name: "model.pkl"
+  preprocessor_file_name: "preprocessor.pkl"
+
+cloud:
+  model_bucket_name: "machine-failure-model"
+
+config:
+  dir: "config"
+  schema_file_path: "schema.yaml"
+  model_trainer_config_file_path: "model.yaml"
+
+data_ingestion:
+  dir_name: "data_ingestion"
+  split_dir_name: "split"
+  train_test_split_ratio: 0.2
+
+data_validation:
+  dir_name: "data_validation"
+  report_yaml_file_name: "report.yaml"
+  report_html_file_name: "report.html"
+
+data_transformation:
+  dir_name: "data_transformation"
+  data_dir_name: "data"
+
+model_trainer:
+  dir_name: "model_trainer"
+  expected_roc_score: 0.92

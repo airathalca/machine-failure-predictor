@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 
 from machine_failure.exception.custom_exception import CustomException
 from machine_failure.logger.custom_logging import logging
-from machine_failure.constants import DATABASE_NAME
+from machine_failure.utils.main_utils import read_yaml_file
 
 ca = certifi.where()
+params = read_yaml_file("config/param.yaml")
 load_dotenv()
 
 class MongoDBClient:
@@ -19,7 +20,7 @@ class MongoDBClient:
   On Failure  : Raise Exception
   """
   client = None
-  def __init__(self, database_name=DATABASE_NAME) -> None:
+  def __init__(self, database_name= params["database"]["name"]) -> None:
     logging.info("Entered the __init__ method of MongoDBClient class")
     try:
       if MongoDBClient.client is None:

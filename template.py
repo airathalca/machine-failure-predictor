@@ -14,12 +14,15 @@ list_of_files = [
   f"{project_name}/components/model_evaluation.py",
   f"{project_name}/components/model_pusher.py",
   f"{project_name}/configuration/__init__.py",
-  f"{project_name}/constants/__init__.py",
   f"{project_name}/entity/__init__.py",
   f"{project_name}/entity/config_entity.py",
   f"{project_name}/entity/artifact_entity.py",
+  f"{project_name}/entity/model.py",
+  f"{project_name}/entity/s3_model.py",
   f"{project_name}/exception/__init__.py",
+  f"{project_name}/exception/custom_exception.py",
   f"{project_name}/logger/__init__.py",
+  f"{project_name}/logger/custom_logging.py",
   f"{project_name}/pipeline/__init__.py",
   f"{project_name}/pipeline/training_pipeline.py",
   f"{project_name}/pipeline/prediction_pipeline.py",
@@ -33,6 +36,7 @@ list_of_files = [
   "setup.py",
   "config/model.yaml",
   "config/schema.yaml",
+  "config/params.yaml"
 ]
 
 
