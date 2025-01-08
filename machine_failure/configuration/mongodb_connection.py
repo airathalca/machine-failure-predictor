@@ -20,7 +20,7 @@ class MongoDBClient:
   """
   client = None
   def __init__(self, database_name=DATABASE_NAME) -> None:
-    logging.info("Connecting to MongoDB")
+    logging.info("Entered the __init__ method of MongoDBClient class")
     try:
       if MongoDBClient.client is None:
         mongo_db_url = os.getenv("MONGODB_URL_KEY")
@@ -31,7 +31,7 @@ class MongoDBClient:
       self.client = MongoDBClient.client
       self.database = self.client[database_name]
       self.database_name = database_name
-      logging.info("MongoDB connection successfully established")
+      logging.info("Exiting the __init__ method of MongoDBClient class. Connection established successfully")
     except Exception as e:
       logging.error(f"Error in cls MongoDBClient method __init__: {e}")
       raise CustomException(e,sys)

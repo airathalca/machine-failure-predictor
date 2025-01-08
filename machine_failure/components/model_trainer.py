@@ -24,19 +24,20 @@ class ModelTrainer:
     self.model_schema = read_yaml_file(os.path.join(CONFIG_DIR, MODEL_TRAINER_CONFIG_FILE_PATH))
 
   def _get_model_class(self, model_config: Dict[str, Any]) -> Any:
-    logging.info("Entered the _get_model_class method")
+    logging.info("Entered the _get_model_class method of ModelTrainer class")
     try:
       module_name = model_config["module"]
       class_name = model_config["class"]
       module = import_module(module_name)
       model_class = getattr(module, class_name)
+      logging.info(f"Exiting the _get_model_class method of ModelTrainer class")
       return model_class
     except Exception as e:
       logging.error(f"Error in cls ModelTrainer method _get_model_class: {e}")
       raise CustomException(e, sys)
     
   def _optimize_model(self, model_name: str, model_config: Dict[str, Any], X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray) -> Dict[str, Any]:
-    logging.info("Entered the _optimize_model method")
+    logging.info("Entered the _optimize_model method of ModelTrainer class")
     try:
       model_class = self._get_model_class(model_config)
       def objective(trial):
@@ -71,14 +72,14 @@ class ModelTrainer:
       study.optimize(objective, n_trials=self.model_schema["optuna"]["n_trials"])
       logging.info(f"Best ROC AUC for model {model_name}: {study.best_value}")
       logging.info(f"Best parameters for model {model_name}: {study.best_params}")
-
+      logging.info(f"Exiting the _optimize_model method of ModelTrainer class")
       return study.best_params
     except Exception as e:
       logging.error(f"Error in cls ModelTrainer method _optimize_model: {e}")
       raise CustomException(e, sys)
 
   def train_model(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray) -> Tuple[object, ClassificationMetricArtifact]:
-    logging.info("Entered the train_model method")
+    logging.info("Entered the train_model method of ModelTrainer class")
     try:
       # Optimize each model individually
       best_models = {}
@@ -111,23 +112,24 @@ class ModelTrainer:
         f1_score=f1,
       )
       logging.info(f"ROC AUC: {roc_auc}, F1 Score: {f1}")
-
+      logging.info("Exiting the train_model method of ModelTrainer class")
       return voting_clf, metric_artifact
     except Exception as e:
       logging.error(f"Error in cls ModelTrainer method train_model: {e}")
       raise CustomException(e, sys)
 
   def get_model(self) -> ModelTrainerArtifact:
-    logging.info("Entered the get_model method")
+    logging.info("Entered the get_model method of ModelTrainer class")
     try:
-      logging.info("Loading transformed data")
+      logging.info("Loading train transformed data")
       train_arr = load_numpy_array_data(self.transformation_artifact.transformed_train_file_path)
+      logging.info("Loading test transformed data")
       test_arr = load_numpy_array_data(self.transformation_artifact.transformed_test_file_path)
 
       X_train, y_train = train_arr[:, :-1], train_arr[:, -1]
       X_test, y_test = test_arr[:, :-1], test_arr[:, -1]
 
-      logging.info("Training model")
+      logging.info("Train the model")
       model, metric_artifact = self.train_model(X_train, y_train, X_test, y_test)
       if metric_artifact.roc_auc_score < self.config.expected_metric:
         raise CustomException(f"ROC AUC score is less than the expected metric: {metric_artifact.roc_auc_score}", sys)
@@ -137,6 +139,7 @@ class ModelTrainer:
       save_object(self.config.trained_model_file_path, save_file)
       logging.info(f"Model saved at: {self.config.trained_model_file_path}")
 
+      logging.info("Exiting the get_model method of ModelTrainer class")
       return ModelTrainerArtifact(
         trained_model_file_path=self.config.trained_model_file_path,
         metric_artifact=metric_artifact

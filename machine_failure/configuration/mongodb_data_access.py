@@ -23,7 +23,7 @@ class MongoDataset:
       raise CustomException(e,sys)
       
   def export_collection_to_dataframe(self, collection_name:str, database_name:Optional[str] = None)-> pd.DataFrame:
-    logging.info(f"Entered the export_collection_to_dataframe method")
+    logging.info(f"Entered the export_collection_to_dataframe method of MongoDataset class")
     try:
       """
       export entire collection as dataframe:
@@ -37,6 +37,7 @@ class MongoDataset:
       if "_id" in df.columns.to_list():
         df = df.drop(columns=["_id"], axis=1)
       df.replace({"na":np.nan},inplace=True)
+      logging.info(f"Exiting the export_collection_to_dataframe method of MongoDataset class")
       return df
     except Exception as e:
       logging.error(f"Error in class MongoDataset method export_collection_to_dataframe: {e}")

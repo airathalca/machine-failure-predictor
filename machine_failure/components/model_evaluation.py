@@ -25,11 +25,12 @@ class ModelEvaluation:
     self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
 
   def get_bucket_model(self) -> Optional[MachineFailureS3Model]:
-    logging.info('Entered the get_bucket_model method')
+    logging.info('Entered the get_bucket_model method of ModelEvaluation class')
     try:
       bucket_name = self.config.bucket_name
       model_path=self.config.s3_model_key_path
       model_bucket = MachineFailureS3Model(bucket_name, model_path)
+      logging.info('Exiting the get_bucket_model method of ModelEvaluation class')
       if model_bucket.is_model_present(model_path=model_path):
         return model_bucket
       logging.error('Model not found in the bucket')
@@ -40,6 +41,7 @@ class ModelEvaluation:
       raise CustomException(e, sys)
 
   def evaluate_model(self) -> ModelEvaluationArtifact:
+    logging.info('Entered the evaluate_model method of ModelEvaluation class')
     try:
       test_df = pd.read_csv(self.ingestion_artifact.test_file_path)
       X_test = test_df.drop(columns=[self.schema['target']], axis=1)
@@ -69,7 +71,7 @@ class ModelEvaluation:
         f1 = 0
       logging.info(f'bucket model roc_auc: {roc_auc}, current model roc_auc: {self.model_trainer_artifact.metric_artifact.roc_auc_score}')
       is_model_accepted = self.model_trainer_artifact.metric_artifact.roc_auc_score > roc_auc
-      logging.info('Model evaluation completed')
+      logging.info('Exiting the evaluate_model method of ModelEvaluation class. Model evaluation completed')
       return ModelEvaluationArtifact(model_accepted=is_model_accepted, s3_model_path=self.config.s3_model_key_path, 
                                      trained_model_path=self.model_trainer_artifact.trained_model_file_path)
     except Exception as e:

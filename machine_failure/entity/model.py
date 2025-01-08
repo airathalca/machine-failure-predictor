@@ -12,9 +12,8 @@ class MachineFailureModel:
   def predict(self, dataframe: pd.DataFrame) -> pd.DataFrame:
     logging.info("Entered predict method of MachineFailureModel class")
     try:
-      logging.info("Using the trained model to get predictions")
       transformed_feature = self.preprocessing_object.transform(dataframe)
-      logging.info("Used the trained model to get predictions")
+      logging.info("Exiting the predict method of MachineFailureModel class")
       return self.trained_model_object.predict(transformed_feature)
     except Exception as e:
       logging.error(f"Error in cls MachineFailureModel method predict: {e}")
@@ -23,9 +22,8 @@ class MachineFailureModel:
   def predict_proba(self, dataframe: pd.DataFrame) -> pd.DataFrame:
     logging.info("Entered predict_proba method of MachineFailureModel class")
     try:
-      logging.info("Using the trained model to get predictions")
       transformed_feature = self.preprocessing_object.transform(dataframe)
-      logging.info("Used the trained model to get predictions")
+      logging.info("Exiting the predict_proba method of MachineFailureModel class")
       return self.trained_model_object.predict_proba(transformed_feature)
     except Exception as e:
       logging.error(f"Error in cls MachineFailureModel method predict_proba: {e}")

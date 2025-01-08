@@ -14,13 +14,12 @@ class ModelPusher:
   def push_model(self) -> ModelPusherArtifact:
     logging.info("Entered push_model method of ModelPusher class")
     try:
-      logging.info("Uploading artifacts folder to s3 bucket")
       self.s3.upload_file(self.model_evaluation_artifact.trained_model_path, self.config.s3_model_key_path,
                           self.config.bucket_name, remove=False)
       model_pusher_artifact = ModelPusherArtifact(bucket_name=self.config.bucket_name,
                                                   s3_model_path=self.config.s3_model_key_path)
       logging.info("Uploaded artifacts folder to s3 bucket")
-      logging.info(f"Model pusher artifact: [{model_pusher_artifact}]")
+      logging.info("Exiting push_model method of ModelPusher class")
       return model_pusher_artifact
     except Exception as e:
       logging.error(f"Error in push_model method of ModelPusher class: {e}")

@@ -17,18 +17,16 @@ class DataIngestion:
     self.config = DataIngestionConfig()
 
   def export_raw_data(self) -> pd.DataFrame:
-    logging.info("Entered the export_raw_data method")
+    logging.info("Entered the export_raw_data method of DataIngestion class")
     try:
-      logging.info('Exporting data from MongoDB')
       mongo_data = MongoDataset()
       df = mongo_data.export_collection_to_dataframe(self.config.collection_name)
       logging.info(f'Shape of the data: {df.shape}')
 
       dir_path = os.path.dirname(self.config.raw_file_path)
       os.makedirs(dir_path,exist_ok=True)
-      logging.info(f'Saving raw data')
       write_csv(self.config.raw_file_path, df)
-      logging.info('Raw data saved successfully')
+      logging.info('Exiting the export_raw_data method of DataIngestion class. Raw data saved successfully')
 
       return df
     except Exception as e:
@@ -36,25 +34,25 @@ class DataIngestion:
       raise CustomException(e, sys)
     
   def split_data(self, df: pd.DataFrame) -> None:
-    logging.info("Entered the split_data method")
+    logging.info("Entered the split_data method of DataIngestion class")
     try:
       logging.info('Splitting data into train and test')
       train_set, test_set = train_test_split(df, test_size=self.config.train_test_split_ratio)
-      logging.info(f'Data split successfully. Shape of train data: {train_set.shape} and test data: {test_set.shape}')
+      logging.info(f'Shape of train data: {train_set.shape} and test data: {test_set.shape}')
 
       dir_path = os.path.dirname(self.config.training_file_path)
       os.makedirs(dir_path,exist_ok=True)
-      logging.info(f'Saving train data and test data')
+
       write_csv(self.config.training_file_path, train_set)
       write_csv(self.config.testing_file_path, test_set)
-      logging.info('Train and Test data saved successfully')
+      logging.info('Exiting the split_data method of DataIngestion class. Train and Test data saved successfully')
 
     except Exception as e:
       logging.error(f"Error in cls DataIngestion method split_data: {e}")
       raise CustomException(e, sys)
     
   def read_data(self) -> DataIngestionArtifact:
-    logging.info("Entered the read_data method")
+    logging.info("Entered the read_data method of DataIngestion class")
     try:
       df = self.export_raw_data()
       logging.info('Data exported successfully')
@@ -64,7 +62,7 @@ class DataIngestion:
 
       data_ingestion_artifact = DataIngestionArtifact(train_file_path=self.config.training_file_path, 
                                                       test_file_path=self.config.testing_file_path)
-
+      logging.info('Exiting the read_data method of DataIngestion class')
       return data_ingestion_artifact
     except Exception as e:
       logging.error(f"Error in cls DataIngestion method read_data: {e}")

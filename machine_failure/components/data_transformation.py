@@ -36,33 +36,30 @@ class DataTransformation:
     self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
 
   def create_preprocessor(self) -> Pipeline:
-    logging.info("Entered the create_preprocessor method")
+    logging.info("Entered the create_preprocessor method of DataTransformation class")
     try:
+      logging.info("Creating numerical and categorical pipelines")
       categorical_cols = self.schema['cat_columns']
       numerical_cols = self.schema['num_columns']
-      logging.info("Initialize numerical pipeline")
       num_pipeline = Pipeline([
         ('scaler', StandardScaler())
       ])
-
-      logging.info("Initialize categorical pipeline")
       cat_pipeline = Pipeline([
         ('label_encoder', OrdinalEncoder()),
         ('std_scaler', StandardScaler())
       ])
 
-      logging.info("Initialize preprocessor")
+      logging.info("Creating Preprocessor object containing numerical and categorical pipelines")
       preprocessor = ColumnTransformer([
         ('num', num_pipeline, numerical_cols),
         ('cat', cat_pipeline, categorical_cols)
       ])
 
-      logging.info("Creating Full Pipeline")
       full_preprocessor = Pipeline([
         ('feature_generator', FeatureGenerator()),
         ('preprocessor', preprocessor)
       ])
-      logging.info('Preprocessor created successfully')
+      logging.info('Exiting the create_preprocessor method of DataTransformation class')
 
       return full_preprocessor
     except Exception as e:
@@ -70,12 +67,11 @@ class DataTransformation:
       raise CustomException(e, sys)
     
   def transform_data(self) -> DataTransformationArtifact:
-    logging.info("Entered the transform_data method")
+    logging.info("Entered the transform_data method of DataTransformation class")
     try:
       if not self.validation_artifact.validation_status:
         raise CustomException("Data validation failed", sys)
-      
-      logging.info("Starting data transformation")
+
       preprocessor = self.create_preprocessor()
       logging.info("Preprocessor object obtained")
 
@@ -113,6 +109,7 @@ class DataTransformation:
       logging.info('Saving preprocessor object')
       save_object(self.config.transformed_object_file_path, preprocessor)
 
+      logging.info('Exiting the transform_data method of DataTransformation class')
       return DataTransformationArtifact(
         transformed_train_file_path=self.config.transformed_train_file_path,
         transformed_test_file_path=self.config.transformed_test_file_path,

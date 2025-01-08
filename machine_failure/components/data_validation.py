@@ -19,17 +19,18 @@ class DataValidation:
     self.schema = read_yaml_file(os.path.join(CONFIG_DIR, SCHEMA_FILE_PATH))
 
   def validate_total_columns(self, df: pd.DataFrame) -> bool:
-    logging.info("Entered the validate_total_columns method")
+    logging.info("Entered the validate_total_columns method of DataValidation class")
     try:
       total_cols = len(df.columns) == len(self.schema['columns'])
-      logging.info(f'Total number of columns in the dataframe and schema are the same: {total_cols}')
+      logging.info(f'Is total number of columns in the data frame equal to the schema? {total_cols}')
+      logging.info(f"Exiting the validate_total_columns method of DataValidation class")
       return total_cols
     except Exception as e:
       logging.error(f"Error in cls DataValidation method validate_total_columns: {e}")
       raise CustomException(e, sys)
 
   def validate_columns(self, df: pd.DataFrame) -> bool:
-    logging.info("Entered the validate_columns method")
+    logging.info("Entered the validate_columns method of DataValidation class")
     try:
       missing_num_col = []
       missing_cat_col = []
@@ -48,14 +49,14 @@ class DataValidation:
         logging.info(f'Missing numerical columns: {missing_num_col}')
       if len(missing_cat_col) > 0:
         logging.info(f'Missing categorical columns: {missing_cat_col}')
-
+      logging.info(f"Exiting the validate_columns method of DataValidation class")
       return all_exist                          
     except Exception as e:
       logging.error(f"Error in cls DataValidation method validate_columns: {e}")
       raise CustomException(e, sys)
     
   def detect_dataset_drift(self, train_df: pd.DataFrame, test_df: pd.DataFrame) -> bool:
-    logging.info("Entered the detect_dataset_drift method")
+    logging.info("Entered the detect_dataset_drift method of DataValidation class")
     try:
       # Create a data drift report using the new Evidently API
       data_drift_report = Report(metrics=[DataDriftPreset()])
@@ -72,6 +73,7 @@ class DataValidation:
       n_drifted_features = report_json["metrics"][0]["result"]["number_of_drifted_columns"]
 
       logging.info(f"{n_drifted_features}/{n_features} drift detected.")
+      logging.info(f"Exiting the detect_dataset_drift method of DataValidation class")
       return drift_status
     except Exception as e:
       logging.error(f"Error in cls DataValidation method detect_dataset_drift: {e}")
@@ -109,7 +111,7 @@ class DataValidation:
           logging.info("Dataset drift detected")
         else:
           logging.info("No dataset drift detected. Data is valid")
-
+      logging.info("Exiting the validate_data method of DataValidation class")
       return DataValidationArtifact(
         validation_status=(len(error_msg) == 0),
         message=error_msg,
