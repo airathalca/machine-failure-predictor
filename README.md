@@ -1,4 +1,4 @@
-# Gemstone Price Predictor
+# Machine Failure Predictor
 
 ## How to run?
 1. Create Virtual Environment with conda or other tools.
